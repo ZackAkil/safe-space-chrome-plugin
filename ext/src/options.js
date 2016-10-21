@@ -1,11 +1,20 @@
 // Saves options to chrome.storage
 function save_options() {
   console.log("saving!");
-  var color = document.getElementById('color').value;
-  var likesColor = document.getElementById('like').checked;
+  var action;
+  var radios = document.getElementsByName('action');
+  for (var i = 0, length = radios.length; i < length; i++) {
+      if (radios[i].checked) {
+          // do whatever you want with the checked radio
+          action= radios[i].value;
+          // only one radio can be logically checked, don't check the rest
+          break;
+      }
+  }
+  var replaceText = document.getElementById('replace-text').value;
   chrome.storage.sync.set({
-    favoriteColor: color,
-    likesColor: likesColor
+    actionOnTroll: action,
+    replaceWithText: replaceText
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -21,12 +30,15 @@ function save_options() {
 function restore_options() {
   // Use default value color = 'red' and likesColor = true.
   chrome.storage.sync.get({
-    favoriteColor: 'red',
-    likesColor: true
+    actionOnTroll: 'replace',
+    replaceWithText: 'That\'s swell, I\'d just really like to be your friend'
   }, function(items) {
-    document.getElementById('color').value = items.favoriteColor;
-    document.getElementById('like').checked = items.likesColor;
-    console.log("fetched! " + items.favoriteColor);
+    if(items.actionOnTroll == 'replace')
+      document.getElementById('rdb-replace').checked = true;
+    else
+    document.getElementById('rdb-hide').checked = true;
+    document.getElementById('replace-text').value = items.replaceWithText;
+    // console.log("fetched! " + items.replaceWithText);
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);
