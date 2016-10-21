@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head><title>My Test Extension Options</title></head>
+<head><title>Troll Filter Options</title></head>
 <body>
 
-Favorite color:
-<select id="color">
- <option value="red">red</option>
- <option value="green">green</option>
- <option value="blue">blue</option>
- <option value="yellow">yellow</option>
-</select>
+Action on troll comment:
+
+  <input type="radio" name="action" value="hide" id="rdb-hide">Hide<br>
+  <input type="radio" name="action" value="replace" id="rdb-replace">Replace Text<br>
 
 <label>
-  <input type="checkbox" id="like">
-  I like colors.
+ Replace with:
+ <input type="text" id="replace-text">
 </label>
 
 <div id="status"></div>
