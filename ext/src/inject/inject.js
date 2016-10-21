@@ -1,13 +1,23 @@
 // chrome.extension.sendMessage({}, function(response) {
+	var replaceAction;
+	var textReplace;
+
+	chrome.storage.sync.get({
+	    actionOnTroll: 'replace',
+	    replaceWithText: 'That\'s swell, I\'d just really like to be your friend'
+	  }, function(items) {
+	    replaceAction = (items.actionOnTroll == 'replace');
+	    textReplace = items.replaceWithText;
+	  });
 
 	function huntTrolls(){
 
 		var comments = $('.comment-renderer-text-content');
       	comments.each(function() {
-      		$(this)
-	  		.closest(".comment-renderer")
-	  		.parent()
-	  		.css("background-color", "beige");
+     //  		$(this)
+	  		// .closest(".comment-renderer")
+	  		// .parent()
+	  		// .css("background-color", "beige");
       		console.log($(this).text());
       		commentScore = rateComment($(this).text().toLowerCase());
       		if (commentScore > 0){
@@ -17,12 +27,22 @@
 	}
 
 	function actionOnTrollComment(trollComment,score){
-
+		
 		console.log($( trollComment ).text()  +' score: '+ score);
-  		$(trollComment)
-	  		.closest(".comment-renderer")
-	  		.parent()
-	  		.css("background-color", "yellow");
+		if(!replaceAction){
+			//hide comment
+	  		$(trollComment)
+		  		.closest(".comment-renderer")
+		  		.parent()
+		  		.hide();
+	  	}else{
+	  		//replace comment
+	  			$( trollComment ).text(textReplace);
+	  			// $(trollComment)
+		  		// .closest(".comment-renderer")//comment-renderer-text-content
+		  		// .parent()
+		  		// .css("background-color", "yellow");
+	  	}
   		// $(".comment-renderer").hide();
 	}
 
